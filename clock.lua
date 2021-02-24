@@ -112,7 +112,7 @@ function clock()
   --dofile("clock")
 end
 
-clock()
+--clock()
 
 local refreshing = false
 function refreshTime()      -- gleich wie clock() nur ohne Ladeanimation
@@ -174,7 +174,7 @@ function count()          -- main counting function
 
   os.sleep(2)
 
-  while true do
+  while false do
     term.clear()
     print(tostring(Time.hour) .. ":" .. tostring(Time.minute) .. ":" .. tostring(Time.second))
     print(Time.dayName .. ", " .. Time.monthName .. " " .. Time.day .. ", " .. Time.year)
@@ -183,12 +183,12 @@ function count()          -- main counting function
 
 end
 
-count()
+--count()
 
 -- Ab hier kommt Code um die Uhr anzuzeigen
 
-function drawPixel()
-  
+function drawPixel(x, y)
+  gpu.fill(1, 1, x, y, "█")
 end
 
 function show()
@@ -200,9 +200,8 @@ function show()
 --  gpu.fill(1, 1, w/2, h/2, "X") -- fill top left quarter of screen
 --  gpu.copy(1, 1, w/2, h/2, w/2, h/2)
 
-  gpu.fill(1, 1, 10, 10, colors.orange)
+  gpu.fill(1, 1, 10, 10, "█")
 
 --  gpu.setBackground(colors.green, true)
 end
 
-show()
