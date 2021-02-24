@@ -3,6 +3,11 @@ local os = require("os")
 local term = require("term")
 local thread = require("thread")
 
+local colors = require("colors")
+local component = require("component")
+local gpu = component.gpu
+
+
 local TimeCorrectionFactorInSeconds = 8     -- Zeitverzögerung durch Serveranfrage 
 
 
@@ -182,3 +187,15 @@ count()
 
 -- Ab hier kommt Code um die Uhr anzuzeigen
 
+function drawPixel()
+  
+end
+
+function show()
+  gpu.setBackground(colors.green, true)
+
+
+
+end
+
+show()
