@@ -433,17 +433,10 @@ function showClock_f()
     end
     os.sleep(1)
   end
-  --[[gpu.setForeground(0xFFFFFF)
+  gpu.setForeground(0xFFFFFF)
   gpu.setBackground(0x000000)
   gpu.setResolution(oldw, oldh)
-  gpu.fill(1, 1, oldw, oldh, " ")]]
-
-  if not(pcall(clock)) then
-    gpu.setForeground(0xFFFFFF)
-    gpu.setBackground(0x000000)
-    gpu.setResolution(oldw, oldh)
-    gpu.fill(1, 1, oldw, oldh, " ")
-  end
+  gpu.fill(1, 1, oldw, oldh, " ")
 end
 
 showClock = thread.create(function()
@@ -453,28 +446,11 @@ end)
 while true do
   local id, _, x, y = event.pullMultiple("touch", "interrupted")
   if id == "interrupted" then
+    gpu.setForeground(0xFFFFFF)
+    gpu.setBackground(0x000000)
+    gpu.setResolution(oldw, oldh)
+    gpu.fill(1, 1, oldw, oldh, " ")
     print("soft interrupt, closing")
     break
   end
 end
-
---[[
-function drawPixel(x, y)
-  gpu.fill(1, 1, x, y, "█")
-end
-
-function show()
-  
-  local w, h = gpu.getResolution()
-  gpu.fill(1, 1, w, h, " ") -- clears the screen
-  gpu.setForeground(0x000000)
-  gpu.setBackground(0xFFFFFF)
---  gpu.fill(1, 1, w/2, h/2, "X") -- fill top left quarter of screen
---  gpu.copy(1, 1, w/2, h/2, w/2, h/2)
-
-  gpu.fill(1, 1, 10, 10, "█")
-
---  gpu.setBackground(colors.green, true)
-end
-
-show()]]--
