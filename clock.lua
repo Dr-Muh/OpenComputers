@@ -276,7 +276,13 @@ local function getTime()
     local minute  = os.date('%M', lastmod)
     local sec  = os.date('%S', lastmod)    
 
-    print(year .. " year " .. type(year))
+    --print(year .. " year " .. type(year))
+    print(month .. " month " .. type(month))
+    print(day .. " day " .. type(day))
+    print(weekday .. " weekday " .. type(weekday))
+    print(hour .. " hour " .. type(hour))
+    print(minute .. " min " .. type(minute))
+    print(sec .. " sec " .. type(sec))
     return year, month, day, weekday, hour, minute, sec
 end
 local function gettTime()
