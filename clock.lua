@@ -451,6 +451,7 @@ while true do
     gpu.setResolution(oldw, oldh)
     gpu.fill(1, 1, oldw, oldh, " ")
     print("soft interrupt, closing")
+    os.exit()
     break
   end
 end
