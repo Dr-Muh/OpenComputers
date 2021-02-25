@@ -335,7 +335,8 @@ local function drawNumbers(hh, mm, ss)
   if ss ~= nil then
     n5, n6 = sn(ss)
   end
---print(n1, n2, n3, n4, n5, n6, type(n1))
+print(n1, n2, n3, n4, n5, n6, type(n1))
+os.exit()
   for i = 1, 5, 1 do
     local sep
     if i == 2 or i == 4 then
