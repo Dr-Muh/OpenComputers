@@ -432,12 +432,17 @@ while noExit do
   end
   os.sleep(1)
 end
-gpu.setForeground(0xFFFFFF)
+--[[gpu.setForeground(0xFFFFFF)
 gpu.setBackground(0x000000)
 gpu.setResolution(oldw, oldh)
-gpu.fill(1, 1, oldw, oldh, " ")
+gpu.fill(1, 1, oldw, oldh, " ")]]
 
-
+if not(pcall(clock)) do
+  gpu.setForeground(0xFFFFFF)
+  gpu.setBackground(0x000000)
+  gpu.setResolution(oldw, oldh)
+  gpu.fill(1, 1, oldw, oldh, " ")
+end
 
 --[[
 function drawPixel(x, y)
