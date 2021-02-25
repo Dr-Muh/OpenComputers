@@ -262,7 +262,7 @@ end
 
 local t_correction = tz * 3600 
 
---[[local function getTime()
+local function getTime()
     local file = io.open('/tmp/clock.dt', 'w')
     file:write('')
     file:close()
@@ -275,9 +275,11 @@ local t_correction = tz * 3600
     local hour = os.date('%H', lastmod)
     local minute  = os.date('%M', lastmod)
     local sec  = os.date('%S', lastmod)    
+
+    print(year .. " year " .. type(year))
     return year, month, day, weekday, hour, minute, sec
-end]]
-local function getTime()
+end
+local function gettTime()
   year = tostring(Time.year)
   month = Time.monthName
   day = tostring(Time.day)
