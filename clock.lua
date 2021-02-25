@@ -364,7 +364,7 @@ end
 
 local function drawRT()
   local year, month, day, wd, hh, mm, ss = getTime()
-  gpu.fill(1, 1, w, h, " ")
+  --[[gpu.fill(1, 1, w, h, " ")
   hh, mm, ss = tonumber(hh), tonumber(mm), tonumber(ss)
   if not SHOWSECS then
     ss = nil
@@ -378,7 +378,7 @@ local function drawRT()
   local infoLine = wd .. ", " .. year .. "/" .. month .. "/" .. day .. "::GMT" .. TIMEZONE
   if SWDATERT then
     gpu.set(centerX(infoLine), centerY(1) + 3, infoLine)
-  end
+  end]]
 end
 
 local function cbFunc()
@@ -402,7 +402,7 @@ event.listen("key_down", checkKey)
 term.setCursor(1, 1)
 while noExit do
   if mode == true then
-    drawMT()
+    --drawMT()
   else
     drawRT()
   end
