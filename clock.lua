@@ -102,9 +102,11 @@ function clock()
   displayLoading = thread.create(function()   -- Aufruf Ladeanimation
     displayLoading_f()
   end)
+  displayLoading:attach()
   loadTime = thread.create(function()         -- Aufruf Zeitdownload
     loadTime_f()
   end)
+  loadTime:attach
   thread.waitForAll({loadTime})               -- Wenn zeit gedownloaded, weitermachen
   displayLoading:suspend()                    -- Ladeanimation stoppen
 
@@ -126,6 +128,7 @@ function refreshTime()      -- gleich wie clock() nur ohne Ladeanimation
   loadTime = thread.create(function()         -- Aufruf Zeitdownload
     loadTime_f()
   end)
+  loadTime:attach()
   thread.waitForAll({loadTime})               -- Wenn zeit gedownloaded, weitermachen
   displayLoading:suspend()                    -- Ladeanimation stoppen
 
@@ -172,6 +175,7 @@ function count()          -- main counting function
   addSeconds = thread.create(function()
     addSeconds_f()
   end)
+  addSeconds:attach()
 
   os.sleep(0.5)
 
@@ -442,6 +446,7 @@ end
 showClock = thread.create(function()
   showClock_f()
 end)
+showClock:attach()
 
 while true do
   local id, _, x, y = event.pullMultiple("interrupted")
