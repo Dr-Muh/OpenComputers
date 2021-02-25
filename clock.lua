@@ -415,33 +415,47 @@ local function checkKey(name, addr, key1, key2)
   end
 end
 
-gpu.fill(1, 1, w, h, " ")
-if TOUCH then
-  event.listen("touch", cbFunc)
-end
-if REDSTONE then
-  event.listen("redstone_changed", cbFunc)
-end
-event.listen("key_down", checkKey)
-term.setCursor(1, 1)
-while noExit do
-  if mode == true then
-    drawRT()
-  else
-    drawMT()
+function showClock_f()
+  gpu.fill(1, 1, w, h, " ")
+  if TOUCH then
+    event.listen("touch", cbFunc)
   end
-  os.sleep(1)
-end
---[[gpu.setForeground(0xFFFFFF)
-gpu.setBackground(0x000000)
-gpu.setResolution(oldw, oldh)
-gpu.fill(1, 1, oldw, oldh, " ")]]
-
-if not(pcall(clock)) do
-  gpu.setForeground(0xFFFFFF)
+  if REDSTONE then
+    event.listen("redstone_changed", cbFunc)
+  end
+  event.listen("key_down", checkKey)
+  term.setCursor(1, 1)
+  while noExit do
+    if mode == true then
+      drawRT()
+    else
+      drawMT()
+    end
+    os.sleep(1)
+  end
+  --[[gpu.setForeground(0xFFFFFF)
   gpu.setBackground(0x000000)
   gpu.setResolution(oldw, oldh)
-  gpu.fill(1, 1, oldw, oldh, " ")
+  gpu.fill(1, 1, oldw, oldh, " ")]]
+
+  if not(pcall(clock)) then
+    gpu.setForeground(0xFFFFFF)
+    gpu.setBackground(0x000000)
+    gpu.setResolution(oldw, oldh)
+    gpu.fill(1, 1, oldw, oldh, " ")
+  end
+end
+
+showClock = thread.create(function()
+  showClock_f()
+end)
+
+while true do
+  local id, _, x, y = event.pullMultiple("touch", "interrupted")
+  if id == "interrupted" then
+    print("soft interrupt, closing")
+    break
+  end
 end
 
 --[[
