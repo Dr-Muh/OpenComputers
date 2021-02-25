@@ -113,7 +113,7 @@ function clock()
   --dofile("clock")
 end
 
---clock()
+clock()
 
 local refreshing = false
 function refreshTime()      -- gleich wie clock() nur ohne Ladeanimation
@@ -173,7 +173,7 @@ function count()          -- main counting function
     addSeconds_f()
   end)
 
-  os.sleep(2)
+  os.sleep(0.5)
 
   while false do
     term.clear()
@@ -184,7 +184,7 @@ function count()          -- main counting function
 
 end
 
---count()
+count()
 
 -- Ab hier kommt Code um die Uhr anzuzeigen
 
@@ -196,7 +196,7 @@ NIGHT    = 0x000080
 MORNING  = 0x404000
 RT_BG    = 0x000000
 RT_FG    = 0xFFFFFF
-TIMEZONE = 0
+TIMEZONE = 1
 CORRECT  = 0
 W, H     = 40, 8
 REDSTONE = false
@@ -262,7 +262,7 @@ end
 
 local t_correction = tz * 3600 
 
-local function gettTime()
+--[[local function getTime()
     local file = io.open('/tmp/clock.dt', 'w')
     file:write('')
     file:close()
@@ -284,7 +284,7 @@ local function gettTime()
     print(minute .. " min " .. type(minute))
     print(sec .. " sec " .. type(sec))
     return year, month, day, weekday, hour, minute, sec
-end
+end]]
 local function getTime()
   year = tostring(Time.year)
   if string.len(year) == 1 then
@@ -426,9 +426,9 @@ event.listen("key_down", checkKey)
 term.setCursor(1, 1)
 while noExit do
   if mode == true then
-    --drawMT()
-  else
     drawRT()
+  else
+    drawMT()
   end
   os.sleep(1)
 end
