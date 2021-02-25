@@ -294,9 +294,9 @@ local function setDaytimeColor(hh, mm)
 end
 
 local function drawRT()
-  local year, month, day, wd, hh, mm, ss = getTime()
+  local year, month, day, wd, hh, mm, ss = Time.year, Time.month,Time.day, Time.dayName, Time.hour, Time.minute, Time.second
   gpu.fill(1, 1, w, h, " ")
-  hh, mm, ss = tonumber(hh), tonumber(mm), tonumber(ss)
+  --hh, mm, ss = tonumber(hh), tonumber(mm), tonumber(ss)
   if not SHOWSECS then
     ss = nil
   end
@@ -313,7 +313,7 @@ local function drawRT()
 end
 
 while true do
-  drawRt()
+  drawRT()
   os.sleep(0.5)
 end
 
