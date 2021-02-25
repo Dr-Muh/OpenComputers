@@ -211,7 +211,7 @@ SWDTMMT  = true
 SWDTMRT  = true
 
 oldw, oldh = gpu.getResolution()
-gpu.setResolution(W, H)
+--gpu.setResolution(W, H)
 w, h = gpu.getResolution()
 mode = AUTOMODE
 noExit = true
@@ -254,6 +254,18 @@ local function centerY(lines)
   local whereT, _ = math.modf(lines / 2)
   local where = whereH - whereT + 1
   return where
+end
+
+local function sn(num)
+  -- SplitNumber
+  local n1, n2
+  if num >= 10 then
+    n1, n2 = tostring(num):match("(%d)(%d)")
+    n1, n2 = tonumber(n1), tonumber(n2)
+  else
+    n1, n2 = 0, num
+  end
+  return n1, n2
 end
 
 local function drawNumbers(hh, mm, ss)
