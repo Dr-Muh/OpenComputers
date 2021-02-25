@@ -210,12 +210,16 @@ SWDATERT = true
 SWDTMMT  = true
 SWDTMRT  = true
 
+local fs      = require("filesystem")
+local event   = require("event")
+
 oldw, oldh = gpu.getResolution()
---gpu.setResolution(W, H)
+gpu.setResolution(W, H)
 w, h = gpu.getResolution()
 mode = AUTOMODE
 noExit = true
 
+tz = TIMEZONE + CORRECT
 local nums = {}
 nums[0] = {"███", "█ █", "█ █", "█ █", "███"}
 nums[1] = {"██ ", " █ ", " █ ", " █ ", "███"}
@@ -254,6 +258,24 @@ local function centerY(lines)
   local whereT, _ = math.modf(lines / 2)
   local where = whereH - whereT + 1
   return where
+end
+
+local t_correction = tz * 3600 
+
+local function getTime()
+    local file = io.open('/tmp/clock.dt', 'w')
+    file:write('')
+    file:close()
+    local lastmod = tonumber(string.sub(fs.lastModified('/tmp/clock.dt'), 1, -4)) + t_correction
+
+    local year = os.date('%Y', lastmod)
+    local month = os.date('%m', lastmod)
+    local day = os.date('%d', lastmod)
+    local weekday = os.date('%A', lastmod)
+    local hour = os.date('%H', lastmod)
+    local minute  = os.date('%M', lastmod)
+    local sec  = os.date('%S', lastmod)    
+    return year, month, day, weekday, hour, minute, sec
 end
 
 local function sn(num)
@@ -309,12 +331,28 @@ local function setDaytimeColor(hh, mm)
     daytime = 3
     gpu.setForeground(DAY)
   end
+  return daytime
+end
+
+local function drawMT()
+  local year, month, day, hh, mm = os.date():match("(%d+)/(%d+)/(%d+)%s(%d+):(%d+):%d+")
+  hh, mm = tonumber(hh), tonumber(mm)
+  gpu.fill(1, 1, w, h, " ")
+  drawNumbers(hh, mm)
+  if SWDTMMT then
+    local dtm = setDaytimeColor(hh, mm)
+    gpu.set(centerX(dts[dtm]), centerY(5) - 1, dts[dtm])
+  end
+  gpu.setForeground(MT_FG)
+  if SWDATEMT then
+    gpu.set(centerX(year .. "/" .. month .. "/" .. day), centerY(1) + 3, year .. "/" .. month .. "/" .. day)
+  end
 end
 
 local function drawRT()
-  local year, month, day, wd, hh, mm, ss = Time.year, Time.month,Time.day, Time.dayName, Time.hour, Time.minute, Time.second
+  local year, month, day, wd, hh, mm, ss = getTime()
   gpu.fill(1, 1, w, h, " ")
-  --hh, mm, ss = tonumber(hh), tonumber(mm), tonumber(ss)
+  hh, mm, ss = tonumber(hh), tonumber(mm), tonumber(ss)
   if not SHOWSECS then
     ss = nil
   end
@@ -326,14 +364,41 @@ local function drawRT()
   gpu.setForeground(RT_FG)
   local infoLine = wd .. ", " .. year .. "/" .. month .. "/" .. day .. "::GMT" .. TIMEZONE
   if SWDATERT then
-  gpu.set(centerX(infoLine), centerY(1) + 3, infoLine)
+    gpu.set(centerX(infoLine), centerY(1) + 3, infoLine)
   end
 end
 
-while true do
-  drawRT()
-  os.sleep(0.5)
+local function cbFunc()
+  if mode == true then mode = false gpu.setBackground(RT_BG) gpu.setForeground(RT_FG) else mode = true gpu.setBackground(MT_BG) gpu.setForeground(MT_FG) end
 end
+
+local function checkKey(name, addr, key1, key2)
+  if key1 == KEY1 and key2 == KEY2 then
+    noExit = false
+  end
+end
+
+gpu.fill(1, 1, w, h, " ")
+if TOUCH then
+  event.listen("touch", cbFunc)
+end
+if REDSTONE then
+  event.listen("redstone_changed", cbFunc)
+end
+event.listen("key_down", checkKey)
+term.setCursor(1, 1)
+while noExit do
+  if mode == true then
+    drawMT()
+  else
+    drawRT()
+  end
+  os.sleep(1)
+end
+gpu.setForeground(0xFFFFFF)
+gpu.setBackground(0x000000)
+gpu.setResolution(oldw, oldh)
+gpu.fill(1, 1, oldw, oldh, " ")
 
 
 
