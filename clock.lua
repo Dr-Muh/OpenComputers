@@ -113,7 +113,7 @@ function clock()
   --dofile("clock")
 end
 
-clock()
+--clock()
 
 local refreshing = false
 function refreshTime()      -- gleich wie clock() nur ohne Ladeanimation
@@ -184,7 +184,7 @@ function count()          -- main counting function
 
 end
 
-count()
+--count()
 
 -- Ab hier kommt Code um die Uhr anzuzeigen
 
