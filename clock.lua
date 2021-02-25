@@ -307,7 +307,7 @@ local function getTime()
   if string.len(minute) == 1 then
     minute = "0" .. minute
   end
-  sec = tostring(Time.sec)
+  sec = tostring(Time.second)
   if string.len(sec) == 1 then
     sec = "0" .. sec
   end
@@ -335,8 +335,7 @@ local function drawNumbers(hh, mm, ss)
   if ss ~= nil then
     n5, n6 = sn(ss)
   end
-print(n1, n2, n3, n4, n5, n6, type(n1))
-os.exit()
+
   for i = 1, 5, 1 do
     local sep
     if i == 2 or i == 4 then
