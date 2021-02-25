@@ -431,7 +431,7 @@ function showClock_f()
     else
       drawMT()
     end
-    os.sleep(1)
+    os.sleep(0.5)
   end
   gpu.setForeground(0xFFFFFF)
   gpu.setBackground(0x000000)
@@ -444,7 +444,7 @@ showClock = thread.create(function()
 end)
 
 while true do
-  local id, _, x, y = event.pullMultiple("touch", "interrupted")
+  local id, _, x, y = event.pullMultiple("interrupted")
   if id == "interrupted" then
     gpu.setForeground(0xFFFFFF)
     gpu.setBackground(0x000000)
