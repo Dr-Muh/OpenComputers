@@ -210,6 +210,12 @@ SWDATERT = true
 SWDTMMT  = true
 SWDTMRT  = true
 
+oldw, oldh = gpu.getResolution()
+gpu.setResolution(W, H)
+w, h = gpu.getResolution()
+mode = AUTOMODE
+noExit = true
+
 local nums = {}
 nums[0] = {"███", "█ █", "█ █", "█ █", "███"}
 nums[1] = {"██ ", " █ ", " █ ", " █ ", "███"}
