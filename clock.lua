@@ -126,12 +126,12 @@ function refreshTime()      -- gleich wie clock() nur ohne Ladeanimation
   loadTime = thread.create(function()         -- Aufruf Zeitdownload
     loadTime_f()
   end)
-  thread.waitForAll({loadTime})               -- Wenn zeit gedownloaded, weitermachen
-  displayLoading:suspend()                    -- Ladeanimation stoppen
 
-  createTimeVariable()                        -- Time variablen belegen
-
-  refreshing = false
+  thread.create(function()
+    thread.waitForAll({loadTime})               -- Wenn zeit gedownloaded, weitermachen
+    createTimeVariable()                        -- Time variablen belegen
+    refreshing = false
+  end)
 end
 
 -- Bis hier her geht der Code um die RTC von einer Website zu ziehen
