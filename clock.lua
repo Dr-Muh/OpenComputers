@@ -164,6 +164,7 @@ local lastRefreshTime = 0
 function refreshCheck()
   lastRefreshTime = lastRefreshTime + 1
   if lastRefreshTime > 15 then
+    lastRefreshTime = 0
     refreshTime()
   end
 end
