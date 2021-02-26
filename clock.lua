@@ -153,6 +153,7 @@ function addSeconds_f()               -- function for thread to count clock
         Time.hour = Time.hour + 1
         if Time.hour > 23 then
           refreshTime()
+          TimeCounting = Time
         end
       end
     end
@@ -173,7 +174,7 @@ function count()          -- main counting function
     addSeconds_f()
   end)
 
-  os.sleep(0.5)
+  os.sleep(0.3)
 
   while false do
     term.clear()
