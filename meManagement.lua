@@ -2,32 +2,52 @@ local os = require("os")
 local thread = require("thread")
 local component = require("component")
 
-local adapter = component.proxy("41d6298c-f468-45b0-bf2f-47f678419db2")
+local meController = component.me_controller
 
-local meAutoCrafts = {"calculationProcessor", 16,
-                        "engineeringProcessor", 16,
-                        "logicProcessor", 16}
+local meAutoCrafts = {}
+            meAutoCrafts["Calculation Processor"] = 16
+            meAutoCrafts["Engineering Processor"] = 16
+            meAutoCrafts["Logic Processor"] = 16
 
 
 
-function testCount(name, goal)
-    
+function construct(itemName, amount, itemTable)
+    if amount>0 then
+        craftables = meController.getCraftables()
+        for i, craftable in pairs(craftables) do
+            if i~="n" then
+                craftableLabel = craftable.getItemStack()["label"]
+                if craftableLabel==itemName then
+                    print("produce: " .. craftableLabel .. " x " .. amount)
+                    craftable.request(amount)
+                    do return end
+                end
+            end
+        end
+    end
 end
 
-function readList()
-    for i, v in ipairs(meAutoCrafts) do
-        if i%2 ~=0 then
-            name = meAutoCrafts[i]
-            goal = meAutoCrafts[i+1]
-            --print(meAutoCrafts[i] .. " " .. meAutoCrafts[i+1])
-            testCount(name, goal)
+function testAmount(itemName, itemCount, itemTable)
+    goal = meAutoCrafts[itemName]
+    if goal ~= nil then
+        print(itemName .. " " .. itemCount .. " " .. goal)
+        construct(itemName, goal-itemCount, itemTable)
+    end
+end
+
+function readME(itemsInNetwork)
+    for i, itemTable in pairs(itemsInNetwork) do
+        if type(itemTable)=="table" then
+            itemCount = itemTable["size"]
+            itemName = itemTable["label"]
+            testAmount(itemName, itemCount, itemTable)
         end
     end
 end
 
 function main()
-    readList()
+    itemsInNetwork = meController.getItemsInNetwork()
+    readME(itemsInNetwork)
 end
 
 main()
---test
