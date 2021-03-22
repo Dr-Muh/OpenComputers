@@ -19,6 +19,7 @@ local meAutoCrafts = {}
             meAutoCrafts["Refined Obsidian Dust"] = 8
             meAutoCrafts["Speed Upgrade"] = 8
             meAutoCrafts["Energy Upgrade"] = 8
+            meAutoCrafts["Elite Universal Cable"] = 32
 
 
 
