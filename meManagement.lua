@@ -20,6 +20,7 @@ local meAutoCrafts = {}
             meAutoCrafts["Speed Upgrade"] = 8
             meAutoCrafts["Energy Upgrade"] = 8
             meAutoCrafts["Elite Universal Cable"] = 32
+            meAutoCrafts["Muffling Upgrade"] = 4
 
 
 
