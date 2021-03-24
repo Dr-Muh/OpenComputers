@@ -6,9 +6,6 @@ local component = require("component")
 
 local meController = component.me_controller
 
-local gpu = component.gpu
-local screenAdress = "53252dac-24ec-4ef8-b747-6c342dffc5de"
-
 local meAutoCrafts = {}
             meAutoCrafts["Calculation Processor"] = 16
             meAutoCrafts["Engineering Processor"] = 16
@@ -80,11 +77,8 @@ function readME(itemsInNetwork)
 end
 
 function main()
-    term.clear()
-
     mainThread = thread.create(function()
         while true do
-            gpu.bind(screenAdress)
             term.clear()
             itemsInNetwork = meController.getItemsInNetwork()
             readME(itemsInNetwork)
@@ -102,4 +96,4 @@ while true do
       os.exit()
       break
     end
-  end
+end
