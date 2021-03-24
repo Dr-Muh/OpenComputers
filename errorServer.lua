@@ -1,9 +1,10 @@
 local os = require("os")
 local term = require("term")
 local thread = require("thread")
+local event   = require("event")
 local component = require("component")
 
-local redstone = component.get("9d1615ea-0b23-4b08-93c6-5a4378e44423")
+local redstone = component.proxy("975bae7d-2743-4992-817d-7eef4bbfdb3f")
 
 local modem = component.modem
 
@@ -13,16 +14,16 @@ local screenAdress = "202f972d-2cf6-4b70-97d4-7fa09bdae43f"
 
 
 function main()
-    term.clear()
+    --term.clear()
     gpu.bind(screenAdress)
-    term.clear()
+    --term.clear()
 
     mainThread = thread.create(function()
         testThread = thread.create(function()
             while true do
-                redstone.setOutput(sides.top, true)
+                redstone.setOutput(sides.top, 15)
                 os.sleep(1)
-                redstone.setOutput(sides.top, false)
+                redstone.setOutput(sides.top, 0)
                 os.sleep(1)
             end
         end)
