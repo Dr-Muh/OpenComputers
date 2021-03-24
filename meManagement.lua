@@ -1,8 +1,13 @@
 local os = require("os")
+local term = require("term")
 local thread = require("thread")
+local event   = require("event")
 local component = require("component")
 
 local meController = component.me_controller
+
+local gpu = component.gpu
+local screenAdress = "53252dac-24ec-4ef8-b747-6c342dffc5de"
 
 local meAutoCrafts = {}
             meAutoCrafts["Calculation Processor"] = 16
@@ -21,6 +26,8 @@ local meAutoCrafts = {}
             meAutoCrafts["Energy Upgrade"] = 8
             meAutoCrafts["Elite Universal Cable"] = 32
             meAutoCrafts["Muffling Upgrade"] = 4
+            meAutoCrafts["Printed Circuit Board (PCB)"] = 8
+            meAutoCrafts["Stick"] = 64
 
 
 
@@ -73,11 +80,26 @@ function readME(itemsInNetwork)
 end
 
 function main()
-    while true do
-        itemsInNetwork = meController.getItemsInNetwork()
-        readME(itemsInNetwork)
-        os.sleep(30)
-    end    
+    term.clear()
+
+    mainThread = thread.create(function()
+        while true do
+            gpu.bind(screenAdress)
+            term.clear()
+            itemsInNetwork = meController.getItemsInNetwork()
+            readME(itemsInNetwork)
+            os.sleep(30)
+        end
+    end)    
 end
 
 main()
+
+while true do
+    local id, _, x, y = event.pullMultiple("interrupted")
+    if id == "interrupted" then
+      print("soft interrupt, closing")
+      os.exit()
+      break
+    end
+  end
