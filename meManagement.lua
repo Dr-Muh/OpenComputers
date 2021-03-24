@@ -25,6 +25,7 @@ local meAutoCrafts = {}
             meAutoCrafts["Muffling Upgrade"] = 4
             meAutoCrafts["Printed Circuit Board (PCB)"] = 8
             meAutoCrafts["Stick"] = 64
+            meAutoCrafts["Block of Coal"] = 64
 
 
 
