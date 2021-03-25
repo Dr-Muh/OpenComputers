@@ -5,6 +5,9 @@ local event   = require("event")
 local component = require("component")
 
 local meController = component.me_controller
+local modem = component.modem
+
+local modemReceiverAdress = "969842a8-c66e-41e1-9627-9103ba340afe"
 
 local meAutoCrafts = {}
             meAutoCrafts["Calculation Processor"] = 16
@@ -34,6 +37,49 @@ for k, v in pairs(meAutoCrafts) do
     craftingStatus[k] = nil
 end
 
+local craftingFailures = {}
+for k, v in pairs(meAutoCrafts) do
+    craftingFailures[k] = false
+end
+
+function testForError(craftingProgress)
+    cpuCount = 0
+    cpuBusy = 0
+    for _, cpu in pairs(meController.getCpus()) do
+        if type(cpu)=="table" then
+            if cpu["busy"] then
+                cpuBusy = cpuBusy+1
+            end
+        else
+            cpuCount = cpu
+        end
+    end
+    --print(cpuCount .. " " .. cpuBusy)
+    if craftingProgress.isCanceled() and cpuCount>cpuBusy then
+        return true
+    else
+        return false
+    end
+end
+
+function testSendMessage(label, failedBool)
+    failuresCount = 0
+    for _, b in pairs(craftingFailures) do
+        if b then
+            failuresCount = failuresCount+1
+        end
+    end
+
+    if failuresCount==0 and failedBool then
+        modem.send(modemReceiverAdress, 1, "crafting failed", true)
+    elseif failuresCount==1 and (not failedBool) then
+        if craftingFailures[label]==true then
+            modem.send(modemReceiverAdress, 1, "crafting failed", false)
+        end
+    end
+    craftingFailures[label] = failedBool
+end
+
 function construct(itemName, amount, itemID)
     if amount>0 then
         craftables = meController.getCraftables()
@@ -51,6 +97,13 @@ function construct(itemName, amount, itemID)
                     end
                     print("need to produce: " .. craftableLabel .. " x " .. amount)
                     craftingStatus[craftableLabel] = craftable.request(amount)
+
+                    if testForError(craftingStatus[craftableLabel]) then
+                        print("Crafting failed: " .. craftableLabel)
+                        testSendMessage(craftableLabel, true)
+                    else
+                        testSendMessage(craftableLabel, false)
+                    end
                     return
                 end
             end
