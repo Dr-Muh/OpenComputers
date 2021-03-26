@@ -1,6 +1,6 @@
 local os = require("os")
 local thread = require("thread")
-local event   = require("event")
+local event = require("event")
 local robot = require("robot")
 local sides = require("sides")
 
@@ -26,10 +26,11 @@ function main()
         while true do
             robot.swing(sides.front)
             if checkInventory() then
-
+                dropItems()
             end
         end
     end)
+    print("hi")
 end
 
 main()
