@@ -109,6 +109,7 @@ function construct(itemName, amount, itemID)
             end
         end
     end
+    testSendMessage(itemName, false)
 end
 
 function testAmount(itemName, itemCount, itemID)
