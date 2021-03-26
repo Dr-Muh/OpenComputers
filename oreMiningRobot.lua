@@ -29,15 +29,16 @@ function main()
     robot.select(1)
     mainThread = thread.create(function()
         while true do
+            os.sleep(0.1)
             for i=1, 64 do
                 robot.swing(sides.front)
+                os.sleep(0.1)
             end
             if checkInventory() then
                 dropItems()
             end
         end
     end)
-    print("hi")
 end
 
 main()
