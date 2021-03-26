@@ -7,11 +7,14 @@ local sides = require("sides")
 
 function checkInventory()
     for i=1, 16 do
+        robot.select(i)
         if robot.count(i) > 0 then
-            return false
+            robot.select(1)
+            return true
         end
     end
-    return true
+    robot.select(1)
+    return false
 end
 
 function dropItems()
@@ -19,12 +22,16 @@ function dropItems()
         robot.select(i)
         robot.dropDown(64)
     end
+    robot.select(1)
 end
 
 function main()
+    robot.select(1)
     mainThread = thread.create(function()
         while true do
-            robot.swing(sides.front)
+            for i=1, 64 do
+                robot.swing(sides.front)
+            end
             if checkInventory() then
                 dropItems()
             end
